@@ -1,3 +1,40 @@
-h1 {
- color: red;
+
+body {
+ border-collapse: collapse;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+}
+
+.gameboard-container {
+ width: 400px;
+ height: 400px;
+ background-color: antiquewhite;
+ display: grid;
+}
+.row-one {
+/*👉border: 1px solid blue;👈*/
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+}
+.row-one div{
+ border: 1px solid purple;
+}
+.row-two {
+/*👉border: 1px solid pink;👈*/
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+}
+
+.row-two div{
+ border: 1px solid purple;
+}
+.row-three { 
+/*👉border: 1px solid yellow;👈*/
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+}
+.row-three div{
+ border: 1px solid purple;
 }
