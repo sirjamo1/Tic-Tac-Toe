@@ -3,16 +3,13 @@ const gameboard = (function () {
     return { board };
 })();
 
-const playerFactory = (playerNumber, playerName, XorO) => {
-    let getPlayerNumber = () => playerNumber;
+const playerFactory = (playerName, XorO) => {
+
     let getPlayerName = () => playerName;
-    console.log(
-        `player number is ${playerNumber} and player name is ${playerName} X or O : ${XorO}`
-    );
-    return { getPlayerNumber, getPlayerName, XorO };
+    return { getPlayerName, XorO };
 };
-let playerOne = playerFactory(1, "james", "X");
-let playerTwo = playerFactory(2, "computer", "O");
+let playerOne = playerFactory( "Player one", "X");
+let playerTwo = playerFactory( "Player two", "O");
 const gameboardContainer = document.querySelector(".gameboard-container");
 
 function whichDiv() {
@@ -22,17 +19,16 @@ function whichDiv() {
         let box = document.getElementById(children[i].id);
         box.addEventListener("click", () => {
             const player = turnCount % 2 === 0 ? playerOne : playerTwo;
+            const playerNext = turnCount % 2 !== 0 ? playerOne : playerTwo;
             if (box.textContent == "") {
-                console.log(turnCount);
                 turnCount += 1;
-                console.log(turnCount);
                 box.textContent = player.XorO;
-                threeInRow(player);
+                threeInRow(player, playerNext);
             }
         });
     }
 }
-function threeInRow(player) {
+function threeInRow(player, playerNext) {
     let box0 = gameboardContainer.children[0].textContent;
     let box1 = gameboardContainer.children[1].textContent;
     let box2 = gameboardContainer.children[2].textContent;
@@ -59,6 +55,14 @@ function threeInRow(player) {
         winningText(player);
     } else if (box2 === box4 && box4 === box6 && box6 !== "") {
         winningText(player);
+    } else if (box0 != "" && box1 != "" && box2 != "" && box3 != "" && box4 != "" && box5 != "" && box6 != "" && box7 != "" && box8 != "") {
+         document.getElementById(
+             "winnerText"
+         ).innerHTML = `Draw!`;
+    } else {
+        document.getElementById(
+            "winnerText"
+        ).innerHTML = `${playerNext.getPlayerName()}'s turn`;
     }
 }
 function winningText(player) {
