@@ -24,3 +24,8 @@ flex-direction: column;
  font-size: 9em;
 }
   
+.winning-container {
+ width: 60px;
+ background-color: green;
+ position: absolute;
+}
