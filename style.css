@@ -23,7 +23,9 @@ flex-direction: column;
  justify-content: center;
  font-size: 9em;
 }
-  
+#startReset {
+width: 12rem;
+}
 .winning-container {
  width: 60px;
  background-color: green;

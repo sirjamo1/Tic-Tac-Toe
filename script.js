@@ -1,7 +1,7 @@
-const gameboard = (function () {
-    let board = [];
-    return { board };
-})();
+// const gameboard = (function () {
+//     let board = [];
+//     return { board };
+// })();
 
 const playerFactory = (playerName, XorO) => {
     let getPlayerName = () => playerName;
@@ -15,13 +15,26 @@ let playerOneName = "Player one";
 let playerTwoName = "Player two";
 let playerOne = playerFactory(playerOneName, "X");
 let playerTwo = playerFactory(playerTwoName, "O");
-let turnCount = 0;
+let startReset = document.getElementById("startReset");
+let turnCount = randomNumber();
+function randomNumber() {
+    return Math.floor(Math.random() * 2);
+}
+
+startReset.textContent = turnCount > 0 ? "Reset" : "Start";
+console.log(turnCount);
 const gameboardContainer = document.querySelector(".gameboard-container");
-document.getElementById("formBtn").addEventListener("click", (e) => {
+startReset.addEventListener("click", (e) => {
     e.preventDefault();
-    changeNames();
-    whichDiv();
     reset();
+
+    changeNames();
+    const player = turnCount % 2 === 0 ? playerOne : playerTwo;
+    document.getElementById(
+        "winnerText"
+    ).innerHTML = `${player.getPlayerName()}'s turn`;
+    whichDiv();
+    startReset.textContent = "Reset";
 });
 function changeNames() {
     (playerOneName =
@@ -42,6 +55,7 @@ function whichDiv() {
     let children = gameboardContainer.children;
     for (let i = 0; i < children.length; i++) {
         let box = document.getElementById(children[i].id);
+        box.style.backgroundColor = "antiquewhite";
         box.addEventListener("click", () => {
             const player = turnCount % 2 === 0 ? playerOne : playerTwo;
             const playerNext = turnCount % 2 !== 0 ? playerOne : playerTwo;
@@ -53,16 +67,7 @@ function whichDiv() {
         });
     }
 }
-// function playerTurn(box) {
-//  console.log("click")
-//     const player = turnCount % 2 === 0 ? playerOne : playerTwo;
-//     const playerNext = turnCount % 2 !== 0 ? playerOne : playerTwo;
-//     if (box.textContent == "") {
-//         turnCount += 1;
-//         box.textContent = player.XorO;
-//         threeInRow(player, playerNext);
-//     }
-// }
+
 function threeInRow(player, playerNext) {
     let box0 = gameboardContainer.children[0].textContent;
     let box1 = gameboardContainer.children[1].textContent;
@@ -109,27 +114,15 @@ function threeInRow(player, playerNext) {
     }
 }
 function winningOutcome(player, box1, box2, box3) {
-    changeBoxColor(box1, box2, box3);
+    gameboardContainer.children[box1].style.backgroundColor = "green";
+    gameboardContainer.children[box2].style.backgroundColor = "green";
+    gameboardContainer.children[box3].style.backgroundColor = "green";
     player.printPlayerWins();
-    //removeBoxClick()
 }
-function changeBoxColor(box1, box2, box3) {
- console.log(box1)
- gameboardContainer.children[box1].style.backgroundColor = "green";
- gameboardContainer.children[box2].style.backgroundColor = "green";
- gameboardContainer.children[box3].style.backgroundColor = "green";
-//box1.parentNode.style.backgroundColor = "green"
-}
+
 function reset() {
     for (let i = 0; i < gameboardContainer.children.length; i++) {
         gameboardContainer.children[i].textContent = "";
-        turnCount = 0;
+        turnCount = randomNumber();
     }
 }
-// function removeBoxClick() {
-//  let children = gameboardContainer.children;
-//     for (let i = 0; i < children.length; i++) {
-//         let box = document.getElementById(children[i].id);
-//         box.removeEventListener("click", playerTurn(box) );
-//     }
-// }
