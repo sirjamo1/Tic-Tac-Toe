@@ -61,13 +61,14 @@ border-bottom: 1px solid red;
 width: 12rem;
 }
 #winning-container {
- width: 550px;
- height: 550px;
+ width: 600px;
+ height: 600px;
  background-color: rgba(113, 184, 212, 0.86);
  text-align: center;
  border-radius: 10px;
  z-index: -1;
  position: absolute;
+ top: 160px;
 }
 #winning-container h2 {
  margin-top: 30%;

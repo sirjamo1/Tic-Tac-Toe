@@ -1,15 +1,3 @@
-// const gameboard = (function () {
-//     let board = () => {
-//     let gameContainer = document.querySelector(".gameboard-container");
-//       for (let i = 0; i < 9; i++) {
-//        let box = document.createElement("div");
-//        gameContainer.appendChild(box);
-//        box.setAttribute("id", `box${i}`)
-//       }
-//     };
-//     return { board };
-// })();
-
 const playerFactory = (playerName, XorO) => {
     let getPlayerName = () => playerName;
     let printPlayerWins = () =>
@@ -19,13 +7,13 @@ const playerFactory = (playerName, XorO) => {
     return { getPlayerName, printPlayerWins, XorO, playerName };
 };
 const gameboardContainer = document.querySelector(".gameboard-container");
-const boardFactory = (parentDiv) => {
-    let boxes = [];
-    for (let i = 0; i < parentDiv.children.length; i++) {
-        boxes.push(parentDiv.children[i].textContent);
-    }
-    return { boxes };
-};
+// const boardFactory = (parentDiv) => {
+//     let boxes = [];
+//     for (let i = 0; i < parentDiv.children.length; i++) {
+//         boxes.push(parentDiv.children[i].textContent);
+//     }
+//     return { boxes };
+// };
 
 //let board = boardFactory(gameboardContainer);
 let box0 = gameboardContainer.children[0];
@@ -43,12 +31,13 @@ let playerOne = playerFactory(playerOneName, "X");
 let playerTwo = playerFactory(playerTwoName, "O");
 let startReset = document.getElementById("startReset");
 let winningContainer = document.getElementById("winning-container");
-let turnCount = 0;
-let gameFinished = false
-//player one always goes first
-// let turnCount = randomNumber();
 let aiBtn = document.getElementById("ai-btn");
 let aiActive = false;
+let turnCount = 0;
+let gameFinished = false;
+//player one always goes first
+// let turnCount = randomNumber();
+
 function randomNumber() {
     return Math.floor(Math.random() * 2);
 }
@@ -92,9 +81,8 @@ function whichDiv() {
     }
 }
 
-//NOTE: ai function runs twice, also if ai spot is taken it stops
 function runGame(box, children) {
-    board = boardFactory(gameboardContainer);
+    // board = boardFactory(gameboardContainer);
     let player = turnCount % 2 === 0 ? playerOne : playerTwo;
     let playerNext = turnCount % 2 !== 0 ? playerOne : playerTwo;
     if (aiActive === false) {
@@ -107,10 +95,11 @@ function runGame(box, children) {
             box.textContent = player.XorO;
             threeInRow(player, playerNext);
             player = playerTwo;
-            playerNext = playerOne
-           let boxesLeft = anyBoxesLeft(children);
+            playerNext = playerOne;
+            //bestMove();
+            let boxesLeft = anyBoxesLeft(children)[0];
             let num = boxesLeft[Math.floor(Math.random() * boxesLeft.length)];
-            console.log(gameFinished)
+            console.log({ num });
             let aiBoxSelect = children[num];
             if (aiBoxSelect.textContent === "" && gameFinished === false) {
                 setTimeout(() => {
@@ -133,17 +122,20 @@ function runGame(box, children) {
 }
 
 function anyBoxesLeft(children) {
- let boxesLeft = 0;
- let boxesIndexList = ""
+    let boxesLeft = 0;
+    let boxesIndexList = "";
+    let boxesIndexValue = "";
     for (let i = 0; i < children.length; i++) {
+        let itemValueToAdd = children[i].textContent
+            ? children[i].textContent
+            : i;
+        boxesIndexValue += itemValueToAdd;
         if (children[i].textContent === "") {
-         boxesLeft += 1
-         boxesIndexList += i
-            //console.log(board.boxes[i], i);
+            boxesLeft += 1;
+            boxesIndexList += i;
         }
-        console.log(boxesIndexList)
     }
-    return boxesLeft, boxesIndexList
+    return [boxesIndexList, boxesIndexValue];
 }
 function threeInRow(player, playerNext) {
     turnCount += 1;
@@ -199,17 +191,17 @@ function winningOutcome(player, winBox1, winBox2, winBox3) {
     gameboardContainer.children[winBox3].style.backgroundColor = "green";
     winningContainer.children[0].textContent = player.printPlayerWins();
     winningContainer.style.zIndex = "1";
-    gameFinished = true
+    gameFinished = true;
     player.printPlayerWins();
 }
 
 function reset() {
     for (let i = 0; i < gameboardContainer.children.length; i++) {
         gameboardContainer.children[i].textContent = "";
-        turnCount = 0
+        turnCount = 0;
         //player one always goes first
         // turnCount = randomNumber();
-        gameFinished = false
+        gameFinished = false;
         winningContainer.style.zIndex = "-1";
     }
 }
@@ -224,6 +216,120 @@ aiBtn.addEventListener("click", (e) => {
         console.log("ai On");
     }
 });
-// function aiTurn() {
-//     console.log("I'm ai");
+
+////////////////////////////////////////////////////////////////////
+//Below is code for unbeatable ai (Not finished)
+/////////////////////////////////////////////////////////////////////
+// let scores = {
+//     X: 10,
+//     O: -10,
+//     tie: 0,
+// };
+
+// function bestMove() {
+//     let children = gameboardContainer.children;
+//     let boxesLeft = anyBoxesLeft(children)[0];
+//     let updatedBoard = anyBoxesLeft(children)[1];
+//     let bestScore = -Infinity
+//     let roundScore = 0
+//     if (boxesLeft.length > 0 && gameFinished === false) {
+//       let moves = []
+//         for (let i = 0; i < boxesLeft.length; i++) {
+//          let num = parseInt(boxesLeft[i]);
+//          let move = num
+//          updatedBoard[1].textContent = "X"
+//          moves.push(num)
+//             //only loops through boxes that are empty
+
+//             console.log({ num });
+//             //console.log(children[num]);
+//         }
+//         console.log(updatedBoard[1])
+//     }
+// }
+
+// function bestMove() {
+//     // AI to make its turn
+
+//     let bestScore = -Infinity;
+//     let move;
+//     for (let i = 0; i < 9; i++) {
+//         let box = gameboardContainer.children[i].textContent;
+//         if (box == "") {
+//             box = playerTwo.XorO;
+//             let score = minimax(box, 0, false);
+//             box = "";
+//             if (score > bestScore) {
+//                 bestScore = score;
+//                 move = { i };
+//             }
+//         }
+//     }
+//     box = playerTwo.XorO;
+//     currentPlayer = playerOne;
+// }
+
+// function minimax(box, depth, isMaximizing) {
+//     let result = checkWinner();
+//     if (result !== null) {
+//         return scores[result];
+//     }
+
+//     if (isMaximizing) {
+//         let bestScore = -Infinity;
+//         for (let i = 0; i < 9; i++) {
+//             let box = gameboardContainer.children[i].textContent;
+//             if (box == "") {
+//                 box = playerTwo.XorO;
+//                 let score = minimax(box, depth + 1, false);
+//                 box = "";
+//                 bestScore = max(score, bestScore);
+//             }
+//         }
+//         return bestScore;
+//     } else {
+//         let bestScore = Infinity;
+//         for (let i = 0; i < 9; i++) {
+//             let box = gameboardContainer.children[i].textContent;
+//             if (box == "") {
+//                 box = playerOne.XorO;
+//                 let score = minimax(box, depth + 1, true);
+//                 box = "";
+//                 bestScore = min(score, bestScore);
+//             }
+//         }
+//         return bestScore;
+//     }
+// }
+
+// function checkWinner() {
+//  let result = null
+//  let a = box0.textContent;
+//     let b = box1.textContent;
+//     let c = box2.textContent;
+//     let d = box3.textContent;
+//     let e = box4.textContent;
+//     let f = box5.textContent;
+//     let g = box6.textContent;
+//     let h = box7.textContent;
+//     let i = box8.textContent;
+
+//     if (a === b && b === c && a !== "") {
+//         return result = 0
+//     } else if (d === e && e === f && f !== "") {
+//         return (result = 0);
+//     } else if (g === h && h === i && i !== "") {
+//         return (result = 0);
+//     } else if (a === d && d === g && g !== "") {
+//         return (result = 0);
+//     } else if (b === e && e === h && h !== "") {
+//         return (result = 0);
+//     } else if (c === f && f === i && i !== "") {
+//         return (result = 0);
+//     } else if (a === e && e === i && i !== "") {
+//         return (result = 0);
+//     } else if (c === e && e === g && g !== "") {
+//         return (result = 0);
+//     }
+//     return result
 // }
