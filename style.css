@@ -1,83 +1,122 @@
-
 body {
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .gameboard-container {
- width: 580px;
- height: 580px;
- background-color: rgb(250, 235, 215);
- border: 30px solid rgb(250, 235, 215);
- display: grid;
- text-align: center;
- display: grid;
- grid-template-columns: repeat(3, 1fr);
- grid-template-rows: repeat(3, 1fr);
- 
+    width: 580px;
+    height: 580px;
+    background-color: rgb(250, 235, 215);
+    border: 30px solid rgb(250, 235, 215);
+    display: grid;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
 }
 
 .gameboard-container div {
- 
- align-items: center;
- justify-content: center;
- font-size: 9em;
+    align-items: center;
+    justify-content: center;
+    font-size: 9em;
 }
 #box-0 {
-border-right: 1px solid red;
-border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-1 {
- border-right: 1px solid red;
-border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-2 {
- border-bottom: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-3 {
-  border-right: 1px solid red;
- border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-4 {
-  border-right: 1px solid red;
- border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-5 {
- border-bottom: 1px solid red;
+    border-bottom: 1px solid red;
 }
 #box-6 {
- border-right: 1px solid red;
+    border-right: 1px solid red;
 }
 #box-7 {
- border-right: 1px solid red;
+    border-right: 1px solid red;
 }
 #box-8 {
- 
 }
 
 #startReset {
-width: 12rem;
+    width: 12rem;
 }
 #winning-container {
- width: 600px;
- height: 600px;
- background-color: rgba(113, 184, 212, 0.86);
- text-align: center;
- border-radius: 10px;
- z-index: -1;
- position: absolute;
- top: 160px;
+    width: 600px;
+    height: 600px;
+    background-color: rgba(113, 184, 212, 0.86);
+    text-align: center;
+    border-radius: 10px;
+    z-index: -1;
+    position: absolute;
+    top: 160px;
 }
 #winning-container h2 {
- margin-top: 30%;
- font-size: 5rem;
- color: rgb(255, 17, 0);
+    margin-top: 30%;
+    font-size: 5rem;
+    color: rgb(255, 17, 0);
 }
 #ai-btn {
- width: 40px;
- height: 30px;
- border-radius: 6px;
- background-color: white;
+    width: 40px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: white;
+}
+.winningFlashGreen {
+    animation: winningFlashGreenAni forwards 2s infinite;
+}
+
+@keyframes winningFlashGreenAni {
+    0% {
+        background-color: antiquewhite;
+    }
+    50% {
+        background-color: green;
+    }
+    100% {
+        background-color: antiquewhite;
+    }
+}
+
+.winningFlashRed {
+    animation: winningFlashRedAni forwards 2s infinite;
+}
+
+@keyframes winningFlashRedAni {
+    0% {
+        background-color: antiquewhite;
+    }
+    50% {
+        background-color: red;
+    }
+    100% {
+        background-color: antiquewhite;
+    }
+}
+
+.fadeInText {
+    animation: fadeInTextAni 1.5s ;
+}
+@keyframes fadeInTextAni {
+    0% {
+        color: antiquewhite;
+    }
+    100% {
+        color: black;
+    }
 }

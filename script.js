@@ -88,11 +88,13 @@ function runGame(box, children) {
     if (aiActive === false) {
         if (box.textContent == "") {
             box.textContent = player.XorO;
+            box.classList.add("fadeInText");
             threeInRow(player, playerNext);
         }
     } else if (aiActive === true && player === playerOne) {
         if (box.textContent == "") {
             box.textContent = player.XorO;
+            box.classList.add("fadeInText");
             threeInRow(player, playerNext);
             player = playerTwo;
             playerNext = playerOne;
@@ -104,6 +106,7 @@ function runGame(box, children) {
             if (aiBoxSelect.textContent === "" && gameFinished === false) {
                 setTimeout(() => {
                     aiBoxSelect.textContent = player.XorO;
+                    aiBoxSelect.classList.add("fadeInText");
                     threeInRow(player, playerNext);
                     console.log("ai went");
                 }, 1000);
@@ -156,7 +159,7 @@ function threeInRow(player, playerNext) {
     } else if (g === h && h === i && i !== "") {
         winningOutcome(player, 6, 7, 8);
     } else if (a === d && d === g && g !== "") {
-        winningOutcome(player, 0, 3, 8);
+        winningOutcome(player, 0, 3, 6);
     } else if (b === e && e === h && h !== "") {
         winningOutcome(player, 1, 4, 7);
     } else if (c === f && f === i && i !== "") {
@@ -186,9 +189,20 @@ function threeInRow(player, playerNext) {
     }
 }
 function winningOutcome(player, winBox1, winBox2, winBox3) {
-    gameboardContainer.children[winBox1].style.backgroundColor = "green";
-    gameboardContainer.children[winBox2].style.backgroundColor = "green";
-    gameboardContainer.children[winBox3].style.backgroundColor = "green";
+    gameboardContainer.children[winBox1].classList.remove("fadeInText");
+    gameboardContainer.children[winBox2].classList.remove("fadeInText");
+    gameboardContainer.children[winBox3].classList.remove("fadeInText");
+    if (player === playerTwo && aiActive === true) {
+        gameboardContainer.children[winBox1].classList.add("winningFlashRed");
+        gameboardContainer.children[winBox2].classList.add("winningFlashRed");
+        gameboardContainer.children[winBox3].classList.add("winningFlashRed");
+    } else {
+        gameboardContainer.children[winBox1].classList.add("winningFlashGreen");
+
+        gameboardContainer.children[winBox2].classList.add("winningFlashGreen");
+
+        gameboardContainer.children[winBox3].classList.add("winningFlashGreen");
+    }
     winningContainer.children[0].textContent = player.printPlayerWins();
     winningContainer.style.zIndex = "1";
     gameFinished = true;
@@ -198,6 +212,11 @@ function winningOutcome(player, winBox1, winBox2, winBox3) {
 function reset() {
     for (let i = 0; i < gameboardContainer.children.length; i++) {
         gameboardContainer.children[i].textContent = "";
+        gameboardContainer.children[i].classList.remove(
+            "winningFlashRed",
+            "winningFlashGreen",
+            "fadeInText"
+        );
         turnCount = 0;
         //player one always goes first
         // turnCount = randomNumber();
